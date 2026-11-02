@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Softo ERP – Order Produksi → Laporan Hasil Produksi</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏭</text></svg>">
+<style>
+:root{color-scheme:light;--b:#0085FC;--bl:#8DC4FC;--bd:#DFDFDF;--hd:#F7F7F7;--g:#6C767D;--gr:#4D9900;--dn:#d9261c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:#fff;color:#000;font:14px/1.45 "Helvetica Neue",Helvetica,Arial,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:#fff;z-index:60}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+svg.i{flex:none}
+.side{position:fixed;top:0;bottom:0;left:0;width:200px;background:#fff;border-right:1px solid var(--bd);z-index:45;padding-top:env(safe-area-inset-top,0px);transition:transform .2s}
+.slogo{width:91px;height:91px;margin:17px auto 18px;display:block}
+.side a{display:block;padding:10px 24px;color:#333;text-decoration:none;border-left:3px solid transparent;cursor:pointer}
+.side a.on{color:var(--b);font-weight:700;background:#EEF6FF;border-color:var(--b)}
+.scrim{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:35}
+.top{position:fixed;top:env(safe-area-inset-top,0px);left:200px;right:0;height:50px;background:#fff;border-bottom:1px solid var(--bd);z-index:30;display:flex;align-items:center;gap:5px;padding:0 15px 0 20px}
+.logo-b{border:0;background:none;padding:0;width:40px;height:40px;flex:none;margin-right:5px}.logo-b svg{width:40px;height:40px;display:block}
+.pill{flex:0 1 265px;min-width:60px;height:30px;border:1px solid var(--bd);border-radius:15px;display:flex;align-items:center;padding:0 12px 0 14px;color:#999}
+.pill input{border:0;outline:0;flex:1;min-width:0;background:none}
+.sp{flex:1}
+.circ{width:40px;height:40px;flex:none;border-radius:50%;border:1px solid #d3d3d3;background:#fff;color:var(--g);display:grid;place-items:center;position:relative;padding:0}
+.circ:hover{border-color:var(--b);color:var(--b)}
+.dot{position:absolute;top:5px;right:9px;width:9px;height:9px;border-radius:50%;background:#C00}
+.who{margin-left:8px;line-height:1.25;font-size:13px;white-space:nowrap}.who span{color:var(--g)}
+main{margin-left:200px;padding:78px 30px 40px}
+.wrap{max-width:1120px}
+body.sb .side{transform:translateX(-100%)}body.sb .top{left:0}body.sb main{margin-left:0}
+h1{font-size:20px;margin:0;font-weight:400;line-height:1.4}
+.bdg{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 16px}
+.tag,.pb{display:inline-flex;height:25px;padding:0 16px;align-items:center;border-radius:5px;color:#fff;font-weight:700;font-size:13px;background:var(--g)}
+.pb{height:20px;padding:0 10px;font-size:11px;background:var(--b);margin-left:6px;vertical-align:middle}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0 25px;align-items:start}
+.card{border:1px solid var(--bd);border-radius:5px;background:#fff;margin-bottom:20px}
+.ch{background:var(--hd);height:40px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd);border-radius:4px 4px 0 0}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:12px;margin:0;padding:16px 20px;align-items:center}.kv dt{color:var(--g)}.kv dd{margin:0;font-weight:700;min-width:0}
+.ro,.fc{width:100%;min-height:34px;border:1px solid #CED4DA;border-radius:5px;padding:5px 12px;background:#fff;color:#000}
+.ro{background:var(--hd);border-color:var(--bd);font-weight:700}
+textarea.fc{resize:vertical}
+.ig{display:flex}.ig .fc{border-radius:5px 0 0 5px}.ig .u{display:grid;place-items:center;padding:0 12px;background:var(--hd);border:1px solid #CED4DA;border-left:0;border-radius:0 5px 5px 0;color:var(--g)}
+.radios{display:flex;gap:22px}.radios label{display:flex;gap:6px;align-items:center;font-weight:700;cursor:pointer;min-height:34px}
+input[type=radio],input[type=checkbox]{accent-color:var(--b);margin:0;width:16px;height:16px;cursor:pointer}
+.rq{color:var(--dn);font-style:normal}
+.dp{position:relative}.dp .fc{cursor:pointer;padding-right:40px}.dp>svg{position:absolute;right:11px;top:8px;color:var(--g);pointer-events:none}
+.cal{position:absolute;left:0;top:calc(100% + 4px);width:min(300px,100%);z-index:12;background:#fff;border:1px solid var(--bd);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:8px}.cal[hidden]{display:none}
+.cn{display:flex;align-items:center;justify-content:space-between;font-weight:700}
+.cn button{border:0;background:none;width:36px;height:36px;border-radius:6px}.cn button:hover{background:#EEF6FF}
+.cg{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}.cg .w{font-size:11px;color:var(--g);padding:4px 0}
+.cg button{min-height:36px;border:1px solid transparent;border-radius:6px;background:none}.cg button:hover{background:#EEF6FF}.cg .td{border-color:var(--b)}.cg .on{background:var(--b);color:#fff;font-weight:700}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--bd);margin-top:6px}
+.tab{min-height:42px;padding:0 20px;border:1px solid transparent;border-bottom:0;border-radius:5px 5px 0 0;background:none;color:var(--b);margin-bottom:-1px}
+.tab[aria-selected=true]{background:#fff;border-color:var(--bd);color:#000;font-weight:700}
+.pane{border:1px solid var(--bd);border-top:0;border-radius:0 0 5px 5px;margin-bottom:20px}
+.sumr{padding:12px 20px 8px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.sumr span{color:var(--g)}
+.bar{height:6px;background:#E9ECEF;margin:0 20px 12px;border-radius:3px;overflow:hidden}.bar i{display:block;height:100%;background:var(--gr);transition:width .25s;width:0}
+.r{display:grid;align-items:center;gap:6px;padding:0 20px;min-height:42px;border-top:1px solid var(--bd);font-size:13px}
+.r.h{background:var(--hd);font-weight:700;border-top:0}
+.pane .r.h{border-top:1px solid var(--bd)}
+.fm .r{grid-template-columns:20px minmax(100px,1fr) 78px 240px 44px 78px}.ae:disabled{opacity:.5;cursor:not-allowed}
+.pl .r{grid-template-columns:1fr 130px 110px 110px 130px}
+.ol .r{grid-template-columns:150px 1fr 120px 120px}
+.ol .r.row{padding-top:6px;padding-bottom:6px;cursor:pointer;width:100%;text-align:left;background:#fff;border:0;border-top:1px solid var(--bd)}.ol .r.row:hover{background:#F4F9FF}
+.lh .r{grid-template-columns:160px 1fr 140px 140px}
+.n{text-align:right}.gn{text-align:right;color:var(--gr)}.bl{color:var(--b);font-weight:700;display:flex;align-items:center;gap:4px;min-width:0;overflow-wrap:anywhere}
+.bl small{display:block;font-weight:400;color:var(--g);font-size:11px}
+.sn .sl{padding-left:14px}.mu{color:var(--g);font-size:12px}
+.off .qb{opacity:.6}
+.qb{height:26px;width:90px;margin-left:auto;border:1px solid #CED4DA;border-radius:5px;background:#E9ECEF;color:#7D868C;text-align:right;padding:0 6px;display:flex;align-items:center;justify-content:flex-end}
+input.qb{display:block}input.qb:not(:disabled){background:#fff;color:#000}.qb.bad{border-color:var(--dn);color:var(--dn)}
+.ib{border:0;background:none;color:var(--b);padding:2px;display:grid;place-items:center;border-radius:4px}
+.ib:disabled{color:#C5C9CC;cursor:not-allowed}.ib.del{color:var(--g)}.ib.del:hover{color:var(--dn)}
+.tg{border:0;background:none;padding:0 2px;color:#000;display:grid;place-items:center}.tg.cl svg{transform:rotate(-90deg)}
+.btn{height:40px;min-width:80px;padding:0 18px;border-radius:5px;border:1px solid var(--b);background:#fff;color:var(--b);font-size:16px;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn:hover:not(:disabled){background:#EEF6FF}.btn-p{background:var(--b);color:#fff}.btn-p:hover:not(:disabled){background:#0072d9}
+.btn-p:disabled{background:var(--bl);border-color:var(--bl);cursor:not-allowed}
+.btn:focus-visible,.circ:focus-visible,.ib:focus-visible,.tab:focus-visible,.logo-b:focus-visible,.fc:focus-visible,.row:focus-visible,.tg:focus-visible{outline:3px solid rgba(0,133,252,.35);outline-offset:1px}
+.bar2{margin-top:30px;display:flex;gap:12px;flex-wrap:wrap}
+.btn-s{height:30px;min-width:90px;padding:0 14px;font-size:14px}
+.ag{display:flex;width:100%;min-width:0}
+.ai{flex:1;min-width:0;height:36px;border:1px solid #CED4DA;border-radius:5px 0 0 5px;background:#E9ECEF;color:#212529;text-align:right;padding:0 10px;font-size:15px}
+.ai:not([readonly]){background:#fff}.ai.bad{border-color:var(--dn);color:var(--dn)}
+.au{display:grid;place-items:center;padding:0 12px;background:#E9ECEF;border:1px solid #CED4DA;border-left:0;color:#495057;font-size:14px}
+.ag .au:last-child{border-radius:0 5px 5px 0}
+.ae{border:1px solid #495057;background:#fff;color:#495057;border-radius:0 5px 5px 0;padding:0 14px;height:36px;font-size:15px;margin-left:-1px}.ae:hover{background:#F1F3F5}
+.ae.pri{background:var(--b);border-color:var(--b);color:#fff}.ae.pri:hover{background:#0072d9}
+.ae:focus-visible,.ai:focus-visible{outline:3px solid rgba(0,133,252,.35);outline-offset:1px;position:relative;z-index:1}
+.ck2{display:grid;place-items:center}.lh .r:not(.h){padding-top:6px;padding-bottom:6px}.tk{width:18px!important;height:18px!important}
+.pq{display:flex;align-items:center;gap:10px}.pq .ag{max-width:320px}
+.toast{position:fixed;left:50%;bottom:calc(1rem + env(safe-area-inset-bottom,0px));transform:translate(-50%,160%);background:#222;color:#fff;padding:.6rem 1rem;border-radius:5px;z-index:90;transition:transform .25s;max-width:90vw;font-size:13px}.toast.show{transform:translate(-50%,0)}
+/* scanner (same look as the original LHP scanner) */
+.scn{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.55)}.scn.on{display:flex}
+.scp{background:#0b0d0f;color:#fff;width:100%;height:100%;display:flex;flex-direction:column;overflow:auto;padding-top:env(safe-area-inset-top,0px)}
+@media(min-width:600px){.scp{width:420px;height:min(100%,720px);border-radius:14px}}
+.sth{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid #2a2f35}.sth h2{font-size:17px;margin:0}.sth small{color:#9aa4ad;display:block}
+.sth .ib{color:#fff;width:44px;height:44px;margin-left:auto}
+.svf{position:relative;margin:20px auto 12px;width:min(260px,70%);aspect-ratio:1;border-radius:12px;background:repeating-linear-gradient(45deg,#14181c,#14181c 10px,#171c20 10px,#171c20 20px);overflow:hidden;flex:none}
+.svf i{position:absolute;width:34px;height:34px;border:4px solid #4aa8ff}
+.svf i:nth-child(1){top:0;left:0;border-right:0;border-bottom:0;border-radius:12px 0 0 0}.svf i:nth-child(2){top:0;right:0;border-left:0;border-bottom:0;border-radius:0 12px 0 0}
+.svf i:nth-child(3){bottom:0;left:0;border-right:0;border-top:0;border-radius:0 0 0 12px}.svf i:nth-child(4){bottom:0;right:0;border-left:0;border-top:0;border-radius:0 0 12px 0}
+.svf b{position:absolute;left:8%;right:8%;height:2px;background:#4aa8ff;box-shadow:0 0 12px #4aa8ff;animation:sw 2.2s ease-in-out infinite alternate}
+.svf.off{opacity:.35}.svf.off b{display:none}
+@keyframes sw{from{top:10%}to{top:90%}}
+@media(prefers-reduced-motion:reduce){.svf b{animation:none;top:50%}.bar i,.toast,.side{transition:none}}
+.scp p{text-align:center;margin:4px 20px;color:#c3cad1}
+.res{margin:10px 16px;min-height:44px;border-radius:6px;padding:8px 10px;background:#16221a;color:#8be3a4;font-size:13px}.res.err{background:#2b1816;color:#ff9c92}.res:empty{visibility:hidden}
+.sfo{margin-top:auto;padding:12px;border-top:1px solid #2a2f35;display:grid;gap:8px}
+.sfo .btn{width:100%;height:48px;font-weight:700}.sfo .sec{background:#20252a;border-color:#3a4148;color:#fff}.sfo .btn-p:disabled{opacity:.45}
+@media (min-width:901px){.mo{display:none!important}}
+@media (max-width:900px){
+ .dm{display:none!important}.side{transform:translateX(-100%);box-shadow:4px 0 16px rgba(0,0,0,.15)}body.sb .side{transform:none}body.sb .scrim{display:block}
+ .top{left:0!important;padding:0 10px}main{margin-left:0!important;padding:70px 20px 40px}.two{grid-template-columns:1fr}.pill{flex-basis:155px}.kv{grid-template-columns:125px 1fr}
+ .r{padding:0 12px;gap:6px}
+ .fm .r.h,.pl .r.h,.lh .r.h{display:none}
+ [data-l]::before{content:attr(data-l);display:block;color:var(--g);font-size:11px;font-weight:400;text-transform:uppercase;letter-spacing:.03em;line-height:1.4}
+ .fm .r:not(.sn),.pl .r:not(.h),.lh .r:not(.h){padding:12px;gap:10px 12px}.fm .r:not(.sn){grid-template-columns:24px 1fr 1fr 36px}
+ .pl .r>:nth-child(1),.pl .r>:nth-child(5),.lh .r>:nth-child(1){grid-column:1/-1}
+ .fm .r:not(.sn)>:nth-child(1){grid-column:1;grid-row:1;align-self:center}.fm .r:not(.sn)>:nth-child(2){grid-column:2/-1;grid-row:1}
+ .fm .r:not(.sn)>:nth-child(3){grid-column:2;grid-row:2}.fm .r:not(.sn)>:nth-child(6){grid-column:3/5;grid-row:2}
+ .fm .r:not(.sn)>:nth-child(4){grid-column:2/4;grid-row:3}.fm .r:not(.sn)>:nth-child(5){grid-column:4;grid-row:3;align-self:end;height:36px}
+ .fm .n,.fm .gn,.pl .n,.lh .n{text-align:left}
+ .fm .r.sn{grid-template-columns:1fr auto 36px;padding:4px 12px 4px 26px}.fm .sn>:nth-child(1),.fm .sn>:nth-child(3),.fm .sn>:nth-child(6){display:none}.fm .sn>:nth-child(2){grid-column:1}.fm .sn>:nth-child(4){grid-column:2;text-align:right}.fm .sn>:nth-child(5){grid-column:3}.fm .sn .sl{padding-left:0}
+ .pl .r:not(.h),.lh .r:not(.h){grid-template-columns:repeat(3,1fr)}.pl .btn-s{width:100%;height:38px;font-size:15px}
+ #pp .kv{grid-template-columns:1fr;gap:2px}#pp .kv dd{margin-bottom:10px}.pq .ag{max-width:none}
+ 
+ .ol .r{grid-template-columns:1fr auto;grid-template-areas:"a d" "b c"}.ol .r.h{display:none}.ol .r>:nth-child(1){grid-area:a}.ol .r>:nth-child(2){grid-area:b;color:var(--g)}.ol .r>:nth-child(3){grid-area:d;text-align:right;font-weight:700}.ol .r>:nth-child(4){grid-area:c;text-align:right;color:var(--g)}
+ h1{font-size:18px}}
+@media (max-width:420px){main{padding:66px 12px 36px}.hs{display:none}.kv{grid-template-columns:105px 1fr;padding:14px}.r{gap:4px;padding:0 8px}.pill{flex-basis:110px}.tab{padding:0 12px}}
+</style>
+</head>
+<body>
+<aside class="side"><svg class="slogo" viewBox="0 0 200 200"><circle cx="100" cy="100" r="100" fill="#0085FC"/><g fill="#fff"><rect x="60" y="50" width="100" height="19" rx="9.5"/><rect x="50" y="91" width="100" height="19" rx="9.5"/><rect x="40" y="132" width="85" height="19" rx="9.5"/></g></svg>
+<nav><a>Dashboard</a><a class="on" data-go="ops">Order Produksi</a><a>Laporan Hasil Produksi</a><a>Inventory</a><a>Reports</a></nav></aside>
+<div class="scrim" data-act="menu"></div>
+<header class="top">
+ <button class="logo-b mo" data-act="menu" aria-label="Menu"><svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="100" fill="#0085FC"/><g fill="#fff"><rect x="60" y="50" width="100" height="19" rx="9.5"/><rect x="50" y="91" width="100" height="19" rx="9.5"/><rect x="40" y="132" width="85" height="19" rx="9.5"/></g></svg></button>
+ <button class="circ dm" id="i-m" data-act="menu" aria-label="Toggle menu"></button>
+ <label class="pill"><input placeholder="Search…" aria-label="Search"><span id="i-s"></span></label><span class="sp"></span>
+ <button class="circ hs" id="i-a" aria-label="Apps"></button><button class="circ" id="i-b" aria-label="Notifications"><i class="dot"></i></button><button class="circ hs" id="i-g" aria-label="Settings"></button>
+ <span class="circ" id="av"></span><div class="who dm"><b>User</b><br><span>Production</span></div>
+</header>
+<main id="app"></main>
+<div class="toast" id="toast" role="status"></div>
+<div class="scn" id="scn" role="dialog" aria-modal="true" aria-label="QR Scanner"><div class="scp">
+ <div class="sth"><div><h2 id="sT">QR Scanner</h2><small id="sS"></small></div><button class="ib" id="sX" aria-label="Close scanner"></button></div>
+ <div class="svf" id="vf"><i></i><i></i><i></i><i></i><b></b></div><p id="sH"></p><div class="res" id="res" aria-live="polite"></div>
+ <div class="sfo"><button class="btn btn-p" id="sim"></button><button class="btn sec" id="done">Done</button></div></div></div>
+
+<script>
+const S=(p,z=20,f)=>`<svg class="i" viewBox="0 0 24 24" width="${z}" height="${z}" fill="${f||'none'}" stroke="${f?'none':'currentColor'}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const QRP='<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v3M14 21h3M17 17h4v4"/>';
+const I={search:S('<circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/>',16),bell:S('<path d="M18 16v-5a6 6 0 0 0-12 0v5l-2 2h16zM10 20a2 2 0 0 0 4 0"/>'),gear:S('<circle cx="12" cy="12" r="3.2"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/>'),
+ apps:S('<rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/>'),menu:S('<path d="M4 7h16M4 12h16M4 17h10"/>'),user:S('<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z"/>',24,'#000'),
+ qr:S(QRP,18),trash:S('<path d="M4 7h16M10 11v6M14 11v6M5 7l1 13h12l1-13M9 7V4h6v3"/>'),tri:S('<path d="M5 8h14l-7 8z"/>',10,'currentColor'),x:S('<path d="M6 6l12 12M18 6L6 18"/>',22),cal:S('<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'),pl:S('<path d="M12 5v14M5 12h14"/>',16),l:S('<path d="M15 5l-7 7 7 7"/>',18),r:S('<path d="M9 5l7 7-7 7"/>',18)};
+const $=s=>document.querySelector(s),fmt=n=>(+n).toLocaleString('en-US');
+$('#i-s').innerHTML=I.search;$('#i-a').innerHTML=I.apps;$('#i-b').insertAdjacentHTML('afterbegin',I.bell);$('#i-g').innerHTML=I.gear;$('#i-m').innerHTML=I.menu;$('#av').innerHTML=I.user;$('#sX').innerHTML=I.x;$('#sim').innerHTML=I.qr+'Simulate Scanning';
+
+const mk=(p,a)=>a.map((q,i)=>({sn:`SN${i+1} - ${p}`,q}));
+const IT={
+ hvs:{n:'HVS',a:'1-1301 Raw Material',u:'kg',f:60,scan:1,pool:mk('HVS',[15,15,20,25,25])},
+ pulp:{n:'Pulp',a:'1-1302 Raw Material',u:'kg',f:40,scan:1,pool:mk('Pulp',[10,10,15,25,40])},
+ uv:{n:'Zat Aditif UV',a:'1-1303 Raw Material',u:'kg',f:5,stock:80},
+ kardus:{n:'Kardus Kemasan',a:'1-1501 Packaging',u:'pcs',f:50,stock:400},
+ label:{n:'Label Botol',a:'1-1502 Packaging',u:'pcs',f:100,stock:2000}};
+const CO='PT Panca Usaha Paramita',WHN='01FPJ - Gudang Pabrik Produksi Jumbo Roll';
+const OPS=[{no:'OP-2610-0007',item:'Botol PET 600 ml',qty:100,u:'pcs',op:'Molding',due:'20 Oct 2026',od:'15 Oct 2026',mc:'Injection 01',sh:1,fr:'FRM-0012',bom:['hvs','pulp','uv','kardus','label']},
+ {no:'OP-2610-0008',item:'Botol PET 1.5 L',qty:60,u:'pcs',op:'Molding',due:'22 Oct 2026',od:'16 Oct 2026',mc:'Blow Molding 01',sh:2,fr:'FRM-0013',bom:['hvs','uv','label']},
+ {no:'OP-2610-0009',item:'Tutup Botol 28 mm',qty:500,u:'pcs',op:'Injection',due:'23 Oct 2026',od:'17 Oct 2026',mc:'Injection 02',sh:1,fr:'FRM-0021',bom:['hvs','pulp','kardus']}];
+const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const TODAY=new Date(2026,9,19),dstr=d=>`${d.getDate()} ${MN[d.getMonth()].slice(0,3)} ${d.getFullYear()}`;
+let view='ops',op,rows=[],pp={qty:0},f={},tab='mc',cur=null,lhps={},lhpN=12,selD,vm;
+const stock=it=>it.scan?it.pool.reduce((s,p)=>s+p.q,0):it.stock;
+const act=r=>IT[r.item].scan?r.scans.reduce((s,p)=>s+p.q,0):(+r.actual||0);
+const left=r=>stock(IT[r.item])-act(r);
+const ready=r=>{const it=IT[r.item];return it.scan?r.scans.length>0:(act(r)>0&&act(r)<=stock(it))};
+const R=k=>rows.find(r=>r.k==k);
+const fmt2=n=>(+n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('show'),2400)};
+const kv=a=>`<dl class="kv">${a.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>`;
+const card=(h,b)=>`<div class="card"><div class="ch">${h}</div>${b}</div>`;
+
+function vOps(){return `<h1>Order Produksi</h1><div class="bdg"><span class="tag">Outstanding</span></div>`+
+ `<div class="card ol"><div class="r h"><div>OP Number</div><div>Item</div><div class="n">Quantity</div><div class="n">Due Date</div></div>${OPS.map((o,i)=>`<button class="r row" data-op="${i}"><div class="bl">${o.no}${lhps[o.no]?`<span class="pb">${lhps[o.no].length} LHP</span>`:''}</div><div>${o.item}</div><div class="n">${fmt(o.qty)} ${o.u}</div><div class="n">${o.due}</div></button>`).join('')}</div>`}
+
+function vOp(){const L=lhps[op.no]||[],rel=L.reduce((t,l)=>t+l.qty,0);
+ return `<h1>${op.no}</h1><div class="bdg"><span class="tag">Order Produksi</span></div><div class="two"><div>`+
+ card('Order Information',kv([['Order Date',op.od],['Due Date',op.due],['Machine',op.mc],['Shift',op.sh]]))+`</div><div>`+card('Warehouse Information',kv([['Company',CO],['Warehouse',WHN]]))+`</div></div>`+
+ `<div class="card pl"><div class="r h"><div>To Produce</div><div>Formula</div><div class="n">Planned</div><div class="n">Released</div><div>Operation</div></div><div class="r"><div class="bl">${op.item}</div><div data-l="Formula">${op.fr}</div><div class="n" data-l="Planned">${fmt(op.qty)} ${op.u}</div><div class="n" data-l="Released">${fmt(rel)} ${op.u}</div><div><button class="btn btn-s" data-act="newlhp">+ LHP</button></div></div></div>`+
+ (L.length?`<div class="card lh"><div class="r h"><div>Laporan Hasil Produksi</div><div>Result Date</div><div class="n">Materials Used</div><div class="n">Qty Produced</div></div>${L.map(l=>`<div class="r"><div class="bl">${l.no}</div><div data-l="Result Date">${l.date}</div><div class="n" data-l="Materials Used">${l.used} of ${l.total}</div><div class="n" data-l="Qty Produced">${fmt(l.qty)} ${op.u}</div>${l.skip.length?`<div class="mu" style="grid-column:1/-1">Not used: ${l.skip.join(', ')}</div>`:''}</div>`).join('')}</div>`:'')+
+ ''}
+
+function vLhp(){
+ return `<h1>Create Laporan Hasil Produksi</h1><div style="height:16px"></div><div class="two"><div>`+
+ card('Result Information',`<dl class="kv"><dt>Result Date</dt><dd><div class="dp"><input class="fc" id="fDate" readonly value="${dstr(f.d)}" aria-haspopup="dialog">${I.cal}<div class="cal" id="cal" hidden role="dialog" aria-label="Choose date"></div></div></dd>
+  <dt>Order Produksi</dt><dd><input class="ro" readonly value="${op.no}"></dd>
+  <dt>Machine</dt><dd><select class="fc" id="fMc"><option value="">Select machine</option>${['Injection 01','Injection 02','Blow Molding 01'].map(m=>`<option ${f.mc==m?'selected':''}>${m}</option>`).join('')}</select></dd>
+  <dt>Shift</dt><dd><div class="radios">${[1,2,3].map(n=>`<label><input type="radio" name="sh" value="${n}" ${f.sh==n?'checked':''}>${n}</label>`).join('')}</div></dd>
+  <dt>Efficiency</dt><dd><div class="ig"><input class="fc" id="fEf" inputmode="decimal" placeholder="0" value="${f.ef}" aria-label="Efficiency"><span class="u">%</span></div></dd>
+  <dt>Keterangan</dt><dd><textarea class="fc" id="fKet" rows="3">${f.ket}</textarea></dd></dl>`)+`</div><div>`+
+ card('Warehouse Information',kv([['Company',`<input class="ro" readonly value="${CO}">`],['Warehouse',`<input class="ro" readonly value="${WHN}">`]]))+`</div></div>`+
+ `<div class="tabs" role="tablist"><button class="tab" role="tab" data-tab="mc">Material Consumed</button><button class="tab" role="tab" data-tab="pp">Product Produced</button></div>`+
+ `<div class="pane" id="mc" role="tabpanel"><div class="sumr"><b id="sumT"></b><span id="sumS"></span></div><div class="bar"><i id="sumB"></i></div><div class="fm" id="mcBody"></div></div>`+
+ `<div class="pane" id="pp" role="tabpanel" hidden><div id="ppBody"></div></div>`+
+ `<div class="bar2"><button class="btn btn-p" id="save" data-act="save" disabled>Save</button><button class="btn" data-act="cancel">Cancel</button></div>`}
+
+const isReady=r=>IT[r.item].scan?r.scans.length>0:r.chk;
+function mcHTML(){
+ return `<div class="r h"><div></div><div>Item</div><div class="n">Formula</div><div class="n">Actual</div><div></div><div class="n">In Stock</div></div>`+
+ rows.map(r=>{const it=IT[r.item],a=act(r),sk=stock(it),sc=it.scan,on=r.on,
+  cell=sc?`<div class="ag"><input class="ai" readonly value="${fmt2(a)}" aria-label="Actual ${it.n}"><span class="au">${it.u}</span></div>`
+   :r.edit?`<div class="ag"><input class="ai ${a>sk?'bad':''}" type="number" inputmode="decimal" min="0" max="${sk}" step="0.01" data-q="${r.k}" value="${r.actual}" aria-label="Actual ${it.n}"><span class="au">${it.u}</span><button class="ae pri" data-a="ok" data-k="${r.k}">Done</button></div>`
+   :`<div class="ag"><input class="ai" readonly value="${fmt2(a)}" aria-label="Actual ${it.n}"><span class="au">${it.u}</span><button class="ae" data-a="ed" data-k="${r.k}" ${on?'':'disabled'}>Edit</button></div>`,
+  actn=sc?`<button class="ib" data-scan="${r.k}" ${on&&left(r)>0?'':'disabled'} aria-label="Scan QR ${it.n}">${I.qr}</button>`:`<input type="checkbox" class="tk" data-c="${r.k}" ${r.chk?'checked':''} ${!on||r.edit||!(a>0)?'disabled':''} aria-label="Confirm actual ${it.n}">`;
+  return `<div class="r"><input type="checkbox" data-on="${r.k}" ${on?'checked':''} aria-label="Use ${it.n}"><div class="bl">${sc&&r.scans.length?`<button class="tg ${r.open?'':'cl'}" data-tg="${r.k}" aria-label="Toggle serial numbers">${I.tri}</button>`:''}<span>${it.n}<small>${it.a}</small></span></div><div class="n" data-l="Formula">${fmt(it.f)} ${it.u}</div><div data-l="Actual">${cell}</div><div class="ck2">${actn}</div><div class="gn" data-l="In Stock">${fmt(sk)} ${it.u}</div></div>`+
+  (sc&&r.open?r.scans.map(p=>`<div class="r sn"><span></span><div class="bl sl">${p.sn}</div><div></div><div class="n">${fmt(p.q)} ${it.u}</div><div class="ck2"><button class="ib del" data-del="${r.k}:${p.sn}" aria-label="Delete ${p.sn}">${I.trash}</button></div><div></div></div>`).join(''):'')}).join('')}
+function ppDraw(){
+ $('#ppBody').innerHTML=`<dl class="kv"><dt>Item</dt><dd>${op.item}</dd><dt>Account</dt><dd>1-1401 Finished Goods</dd><dt>Planned</dt><dd>${fmt(op.qty)} ${op.u}</dd><dt>Qty Produced <i class="rq">*</i></dt><dd><div class="pq"><div class="ag"><input class="ai ${pp.qty>0?'':'bad'}" id="ppQ" ${pp.edit?`type="number" inputmode="decimal" min="0" step="0.01" value="${pp.qty}"`:`type="text" readonly value="${fmt2(pp.qty)}"`} aria-label="Qty produced" aria-required="true"><span class="au">${op.u}</span>${pp.edit?'<button class="ae pri" data-a="pok">Done</button>':'<button class="ae" data-a="ped">Edit</button>'}</div><input type="checkbox" class="tk" id="ppC" ${pp.chk?'checked':''} ${pp.edit||!(pp.qty>0)?'disabled':''} aria-label="Confirm qty produced"></div></dd></dl>`}
+function refresh(){const on=rows.filter(r=>r.on),rd=on.filter(isReady).length,ok=on.length>0&&rd===on.length&&pp.chk&&pp.qty>0&&!pp.edit&&!rows.some(r=>r.edit);
+ $('#sumT').textContent=`${on.length} of ${rows.length} materials used`;$('#sumS').textContent=`${rd} of ${on.length} ready`;$('#sumB').style.width=(on.length?rd/on.length*100:0)+'%';$('#save').disabled=!ok}
+function draw(){$('#mcBody').innerHTML=mcHTML();ppDraw();refresh()}
+function commit(r,v){const sk=stock(IT[r.item]),n=Math.min(sk,Math.max(0,+v||0));if(n!=act(r))r.chk=false;r.actual=n;r.edit=0;draw()}
+function pcommit(v){const n=Math.max(0,+v||0);if(!(n>0)){$('#ppQ').classList.add('bad');toast('Qty Produced wajib diisi');return}if(n!=pp.qty)pp.chk=false;pp.qty=n;pp.edit=0;ppDraw();refresh()}
+function tabApply(){document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===tab));$('#mc').hidden=tab!=='mc';$('#pp').hidden=tab!=='pp'}
+function render(){$('#app').innerHTML=`<div class="wrap">${{ops:vOps,op:vOp,lhp:vLhp}[view]()}</div>`;if(view==='lhp'){tabApply();draw()}
+ if(render.v!==view){scrollTo(0,0);render.v=view}}
+function newLHP(){rows=op.bom.map((id,i)=>({k:i+1,item:id,on:false,actual:IT[id].f,chk:false,edit:0,scans:[],open:true}));pp={qty:op.qty,chk:false,edit:0};
+ f={d:TODAY,mc:op.mc,sh:String(op.sh),ef:'',ket:''};selD=TODAY;tab='mc';view='lhp';render()}
+
+/* calendar */
+function calDraw(){const y=vm.getFullYear(),m=vm.getMonth(),off=(new Date(y,m,1).getDay()+6)%7,n=new Date(y,m+1,0).getDate();
+ let h=`<div class="cn"><button data-nav="-1" aria-label="Previous month">${I.l}</button><span aria-live="polite">${MN[m]} ${y}</span><button data-nav="1" aria-label="Next month">${I.r}</button></div><div class="cg">`+['Mo','Tu','We','Th','Fr','Sa','Su'].map(w=>`<span class="w">${w}</span>`).join('')+'<span></span>'.repeat(off);
+ for(let i=1;i<=n;i++){const c=(selD.getFullYear()==y&&selD.getMonth()==m&&selD.getDate()==i?'on':'')+(TODAY.getFullYear()==y&&TODAY.getMonth()==m&&TODAY.getDate()==i?' td':'');h+=`<button class="${c}" data-day="${i}" aria-label="${i} ${MN[m]} ${y}">${i}</button>`}
+ $('#cal').innerHTML=h+'</div>'}
+
+/* scanner */
+function scanUI(msg,err){const r=R(cur),it=IT[r.item],l=left(r),out=l<=0;
+ $('#sT').textContent=it.n;$('#sS').textContent=out?'Stock fully used':`${fmt(l)} ${it.u} left in stock`;
+ $('#vf').classList.toggle('off',out);$('#sim').disabled=out;
+ $('#sH').textContent=out?'Tidak ada sisa stok untuk di-scan.':'Scan QR Code pada barang yang digunakan.';
+ const x=$('#res');x.textContent=msg||'';x.classList.toggle('err',!!err)}
+function simulate(){const r=R(cur),it=IT[r.item],l=left(r);
+ if(l<=0)return scanUI('Stock fully used. Scanning is disabled.',1);
+ const p=it.pool.find(p=>!r.scans.some(s=>s.sn==p.sn)&&p.q<=l);
+ if(!p)return scanUI('No unscanned serial left in stock.',1);
+ r.scans.push(p);r.open=true;draw();scanUI(`${p.sn} added · +${p.q} ${it.u}`)}
+const closeS=()=>{$('#scn').classList.remove('on');cur=null};
+$('#sX').onclick=$('#done').onclick=closeS;$('#sim').onclick=simulate;
+
+document.addEventListener('click',e=>{
+ if(!e.target.closest('.dp')){const c=$('#cal');if(c)c.hidden=true}
+ const t=e.target.closest('[data-act],[data-go],[data-op],[data-scan],[data-del],[data-tg],[data-tab],[data-nav],[data-day],[data-a],#fDate');if(!t)return;const d=t.dataset;
+ if(t.id==='fDate'){const c=$('#cal');if(c.hidden){vm=new Date(selD.getFullYear(),selD.getMonth(),1);calDraw()}c.hidden=!c.hidden;return}
+ if(d.nav){vm=new Date(vm.getFullYear(),vm.getMonth()+ +d.nav,1);calDraw();return}
+ if(d.day){selD=new Date(vm.getFullYear(),vm.getMonth(),+d.day);f.d=selD;$('#fDate').value=dstr(selD);$('#cal').hidden=true;return}
+ if(d.go){view=d.go;document.body.classList.remove('sb');render();return}
+ if(d.op!==undefined){op=OPS[+d.op];view='op';render();return}
+ if(d.tab){tab=d.tab;tabApply();return}
+ if(d.scan!==undefined){cur=+d.scan;$('#scn').classList.add('on');scanUI();$('#sim').focus();return}
+ if(d.del){const[k,sn]=d.del.split(':'),r=R(k);r.scans=r.scans.filter(p=>p.sn!==sn);draw();toast(sn+' removed');if(cur)scanUI();return}
+ if(d.tg){const r=R(d.tg);r.open=!r.open;draw();return}
+ if(d.a){const r=d.k&&R(d.k);
+  if(d.a==='ed'){r.edit=1;draw();const q=document.querySelector(`[data-q="${r.k}"]`);q.focus();q.select()}
+  else if(d.a==='ok')commit(r,document.querySelector(`[data-q="${r.k}"]`).value);
+  else if(d.a==='ped'){pp.edit=1;ppDraw();refresh();const q=$('#ppQ');q.focus();q.select()}
+  else if(d.a==='pok')pcommit($('#ppQ').value);
+  return}
+ switch(d.act){
+  case 'menu':document.body.classList.toggle('sb');break;
+  case 'newlhp':newLHP();break;
+  case 'cancel':view='op';render();break;
+  case 'save':{const on=rows.filter(r=>r.on);(lhps[op.no]=lhps[op.no]||[]).push({no:`01LHP-26-${String(lhpN++).padStart(4,'0')}`,date:dstr(f.d),used:on.length,total:rows.length,qty:pp.qty,skip:rows.filter(r=>!r.on).map(r=>IT[r.item].n)});
+   view='op';render();toast('LHP saved');break}}
+});
+document.addEventListener('change',e=>{const t=e.target,d=t.dataset;
+ if(t.id==='fMc')f.mc=t.value;
+ else if(t.name==='sh')f.sh=t.value;
+ else if(d.on){const r=R(d.on);if(!t.checked&&r.scans.length){t.checked=true;toast('Hapus SN yang sudah di-scan terlebih dahulu');return}r.on=t.checked;if(!r.on){r.chk=false;r.edit=0}draw()}
+ else if(d.c){R(d.c).chk=t.checked;draw()}
+ else if(t.id==='ppC'){pp.chk=t.checked;refresh()}});
+document.addEventListener('input',e=>{const t=e.target,d=t.dataset;
+ if(t.id==='fEf')f.ef=t.value;else if(t.id==='fKet')f.ket=t.value;
+ else if(t.id==='ppQ'){pp.qty=Math.max(0,+t.value||0);t.classList.toggle('bad',!(pp.qty>0));refresh()}
+ else if(d.q){const r=R(d.q),sk=stock(IT[r.item]);if(+t.value>sk){t.value=sk;toast(`Actual tidak boleh melebihi In Stock (${fmt(sk)} ${IT[r.item].u})`)}r.actual=t.value;t.classList.remove('bad');refresh()}});
+document.addEventListener('keydown',e=>{
+ if(e.key==='Escape'){closeS();const c=$('#cal');if(c)c.hidden=true}
+ if(e.key==='Enter'){const q=e.target.dataset.q;if(q!==undefined)commit(R(q),e.target.value);else if(e.target.id==='ppQ'&&pp.edit)pcommit(e.target.value)}});
+render();
+</script>
+</body>
+</html>

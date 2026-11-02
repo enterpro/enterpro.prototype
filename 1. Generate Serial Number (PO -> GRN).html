@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Softo ERP – PO → GRN → Serial Number</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📦</text></svg>">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<style>
+:root{color-scheme:light;--b:#0085FC;--bl:#8DC4FC;--bd:#DFDFDF;--hd:#F7F7F7;--g:#6C767D;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:#fff;color:#000;font:14px/1.45 "Helvetica Neue",Helvetica,Arial,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:#fff;z-index:60}
+button{font:inherit;cursor:pointer}
+.side{position:fixed;top:0;bottom:0;left:0;width:200px;background:#fff;border-right:1px solid var(--bd);z-index:40;padding-top:env(safe-area-inset-top,0px);transition:transform .2s}
+.logo{width:91px;height:91px;margin:17px auto 18px}
+.side a{display:block;padding:10px 24px;color:#333;text-decoration:none;border-left:3px solid transparent}
+.side a.on{color:var(--b);font-weight:700;background:#EEF6FF;border-color:var(--b)}
+.top{position:fixed;top:env(safe-area-inset-top,0px);left:200px;right:0;height:50px;background:#fff;border-bottom:1px solid var(--bd);z-index:30;display:flex;align-items:center;gap:5px;padding:0 15px 0 20px}
+.circ{width:40px;height:40px;flex:none;border-radius:50%;border:1px solid #d3d3d3;background:#fff;color:var(--g);display:grid;place-items:center;position:relative;padding:0}
+.circ:hover{border-color:var(--b);color:var(--b)}
+.dot{position:absolute;top:5px;right:9px;width:9px;height:9px;border-radius:50%;background:#C00}
+.pill{width:265px;max-width:100%;height:30px;margin-left:0;border:1px solid var(--bd);border-radius:15px;display:flex;align-items:center;padding:0 12px 0 14px;color:#999}
+.pill input{border:0;outline:0;flex:1;min-width:0;font:inherit;background:none}
+.sp{flex:1}.who{margin-left:10px;line-height:1.25;font-size:13px;white-space:nowrap}.who span{color:var(--g)}
+.scrim{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:35}
+main{margin-left:200px;padding:78px 30px 40px;max-width:1380px}
+body.sb .side{transform:translateX(-100%)}body.sb .top{left:0}body.sb main{margin-left:0}
+.title{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:0 0 22px}
+.title h1{margin:0;font-size:18px}
+.tag{background:var(--g);color:#fff;font-weight:700;border-radius:5px;height:30px;padding:0 16px;display:inline-flex;align-items:center}
+.card{border:1px solid var(--bd);border-radius:5px;background:#fff}
+.ch{background:var(--hd);height:40px;padding:0 20px;display:flex;align-items:center;border-bottom:1px solid var(--bd);border-radius:4px 4px 0 0;font-size:14px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:25px;margin-bottom:20px}
+.kv{display:grid;grid-template-columns:170px 1fr;gap:10px 12px;margin:0;padding:18px 20px}.kv dt{color:var(--g)}.kv dd{margin:0;font-weight:700}
+.kv a,.lnk{color:var(--b)}
+table{width:100%;border-collapse:separate;border-spacing:0}
+th{background:var(--hd);height:40px;padding:0 12px;text-align:left;font-weight:700}
+th:first-child,td:first-child{padding-left:20px}
+thead th:first-child{border-top-left-radius:4px}thead th:last-child{border-top-right-radius:4px}
+td{height:40px;padding:5px 12px;border-top:1px solid var(--bd);font-weight:700}
+tfoot td{background:var(--hd);border-radius:0 0 4px 4px}
+.r{text-align:right}.bl{color:var(--b)}
+.ck{width:54px;padding-right:0!important}
+input[type=checkbox]{width:16px;height:16px;accent-color:var(--b);cursor:pointer;margin:0;vertical-align:middle}
+.btn{height:40px;min-width:80px;padding:0 18px;border-radius:5px;border:1px solid var(--b);background:#fff;color:var(--b);font-size:16px;display:inline-flex;align-items:center;justify-content:center}
+.btn:hover:not(:disabled){background:#EEF6FF}
+.btn-p{background:var(--b);color:#fff}.btn-p:hover:not(:disabled){background:#0072d9}
+.btn-p:disabled{background:var(--bl);border-color:var(--bl);cursor:not-allowed}
+.btn-s{height:30px;min-width:102px;font-size:14px}
+.btn-s:disabled{color:var(--bl);border-color:var(--bl);cursor:not-allowed;background:#fff}
+.btn:focus-visible,.circ:focus-visible,input:focus-visible,.ib:focus-visible{outline:3px solid rgba(0,133,252,.35);outline-offset:1px}
+.acts{display:flex;gap:10px;align-items:center;position:relative}
+.ib{border:0;background:none;color:var(--g);padding:3px;border-radius:4px;display:grid;place-items:center}
+.ib:hover{color:var(--b)}.ib.del:hover{color:#d9261c}
+.dd{position:absolute;right:0;top:100%;margin-top:2px;background:#fff;border:1px solid #999;border-radius:5px;min-width:150px;padding:6px 0;display:none;z-index:10;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.dd.show{display:block}.dd button{width:100%;text-align:left;border:0;background:#fff;color:#000;padding:8px 14px;font-size:14px;font-weight:400}.dd button:hover{background:#EEF6FF}
+.sigs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-top:20px}
+.sigs.one{grid-template-columns:minmax(220px,297px)}
+.sig .sh{background:var(--hd);height:40px;display:grid;place-items:center;font-weight:700;border-bottom:1px solid var(--bd);border-radius:4px 4px 0 0}
+.sig .sb{height:100px}.sig .sf{background:var(--hd);height:40px;display:grid;place-items:center;border-top:1px solid var(--bd);border-radius:0 0 4px 4px}
+.bar{margin-top:30px;display:flex;gap:12px;flex-wrap:wrap}
+.bd{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:70;display:none;align-items:center;justify-content:center;padding:1rem;overflow:auto}
+.bd.show{display:flex}
+.modal{background:#fff;border:1px solid #C8C8C8;border-radius:5px;width:400px;max-width:100%;margin:auto;animation:pop .15s ease-out}
+.modal.wide{width:545px}
+@keyframes pop{from{transform:translateY(10px);opacity:0}}
+.mh{display:flex;justify-content:space-between;align-items:center;padding:12px 15px;font-size:18px;border-bottom:1px solid #ddd}
+.x{border:0;background:none;color:#868686;font-size:26px;line-height:1;padding:0 4px}
+.mb{padding:15px}.mf{padding:10px 15px;border-top:1px solid #ddd;display:flex;justify-content:flex-end}
+.mb label{font-weight:700;display:block;margin-bottom:6px}
+.inp{position:relative}.inp input{width:100%;height:36px;border:1px solid #CED4DA;border-radius:5px;padding:0 40px 0 15px;font:inherit;font-size:14px}.inp span{position:absolute;right:14px;top:8px;color:var(--g)}
+.err{color:#d9261c;font-size:13px;min-height:20px;margin-top:6px}
+.hint{color:var(--g);margin-bottom:10px}
+.kv dt,.kv dd{align-self:center}
+.fi{width:100%;height:34px;border:1px solid #CED4DA;border-radius:5px;padding:0 12px;font:inherit;font-weight:400;background:#fff;color:#000}
+.fi[readonly]{background:var(--hd);border-color:var(--bd);font-weight:700;cursor:default}
+.fi:focus{outline:3px solid rgba(0,133,252,.35);border-color:var(--b)}
+.rq{color:#d9261c;font-style:normal}
+.why{align-self:center;color:var(--g);font-size:13px}
+.mut{color:var(--g);font-weight:400}.qin{width:120px;text-align:right;font-weight:700;color:var(--b)}.fi.bad{border-color:#d9261c}
+.qrb{display:flex;flex-direction:column;align-items:center;padding:25px 15px}
+.qr{width:min(259px,62vw);aspect-ratio:1}.qr svg{width:100%;height:100%;display:block}
+.ql{width:min(370px,100%);margin-top:20px;font-size:17px;line-height:2.4;overflow-wrap:anywhere}
+.toast{position:fixed;left:50%;bottom:calc(1rem + env(safe-area-inset-bottom,0px));transform:translate(-50%,160%);background:#222;color:#fff;padding:.6rem 1rem;border-radius:5px;z-index:80;transition:transform .25s;max-width:90vw}
+.toast.show{transform:translate(-50%,0)}
+#printArea{display:none}
+@media print{body>*:not(#printArea){display:none!important}body::before{display:none}#printArea{display:block;padding:8mm;width:90mm;font-size:12pt}#printArea svg{width:50mm;height:50mm}}
+@media (max-width:900px){
+ .side{transform:translateX(-100%);box-shadow:4px 0 16px rgba(0,0,0,.15)}body.sb .side{transform:none}body.sb .scrim{display:block}
+ .top{left:0!important}main{margin-left:0!important;padding:78px 16px 32px}.two{grid-template-columns:1fr}}
+@media (max-width:640px){
+ .hs,.pill,.who{display:none}.top{gap:8px}
+ .kv{grid-template-columns:120px 1fr}
+ table,tbody,tfoot,tr,td{display:block;width:100%}thead{display:none}
+ td{border:0;height:auto;padding:4px 16px!important;display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:right}
+ td[data-l]::before{content:attr(data-l);color:var(--g);font-weight:400;text-align:left}
+ tbody tr{border-top:1px solid var(--bd);padding:6px 0}tbody tr:first-child{border-top:0}
+ td.ck{width:auto;justify-content:flex-start}
+ .acts{justify-content:flex-end}.bar .btn{flex:1}tfoot td{border-radius:0 0 4px 4px}}
+</style>
+</head>
+<body>
+<aside class="side"><div class="logo"><svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="100" fill="#0085FC"/><g fill="#fff"><rect x="60" y="50" width="100" height="19" rx="9.5"/><rect x="50" y="91" width="100" height="19" rx="9.5"/><rect x="40" y="132" width="85" height="19" rx="9.5"/></g></svg></div>
+<nav><a>Dashboard</a><a class="on" data-go="po">Purchase Order</a><a>GRN</a><a>Inventory</a><a>Quality Control</a><a>Reports</a></nav></aside>
+<div class="scrim" data-act="menu"></div>
+<header class="top">
+ <button class="circ" data-act="menu" aria-label="Toggle menu"></button>
+ <label class="pill"><input placeholder="Search…" aria-label="Search"><span id="si"></span></label>
+ <span class="sp"></span>
+ <button class="circ hs" id="i-apps" aria-label="Apps"></button><button class="circ" id="i-bell" aria-label="Notifications"><i class="dot"></i></button><button class="circ hs" id="i-gear" aria-label="Settings"></button>
+ <span class="circ" style="margin-left:5px;font-weight:700">U</span><div class="who"><b>User</b><br><span>Warehouse</span></div>
+</header>
+<main id="app"></main>
+<div class="bd" id="bd" role="dialog" aria-modal="true"><div id="modal"></div></div>
+<div class="toast" id="toast"></div><div id="printArea"></div>
+
+<script>
+const S=(p,f)=>`<svg viewBox="0 0 24 24" width="20" height="20" fill="${f||'none'}" stroke="${f?'none':'currentColor'}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const I={print:S('<path d="M6 9V3h12v6M6 18H4v-7h16v7h-2M7 14h10v7H7z"/>'),trash:S('<path d="M4 7h16M10 11v6M14 11v6M5 7l1 13h12l1-13M9 7V4h6v3"/>'),dots:S('<circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/>','currentColor'),
+ bell:S('<path d="M18 16v-5a6 6 0 0 0-12 0v5l-2 2h16zM10 20a2 2 0 0 0 4 0"/>'),gear:S('<circle cx="12" cy="12" r="3.2"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/>'),
+ search:S('<circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/>'),apps:S('<rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/>'),menu:S('<path d="M4 7h16M4 12h16M4 17h10"/>')};
+document.querySelector('.circ[data-act=menu]').innerHTML=I.menu;si.innerHTML=I.search;
+document.getElementById('i-apps').insertAdjacentHTML('afterbegin',I.apps);document.getElementById('i-bell').insertAdjacentHTML('afterbegin',I.bell);document.getElementById('i-gear').insertAdjacentHTML('afterbegin',I.gear);
+
+const PO={no:'01PO-26-0142',sup:'PT Harapan Polimer',wh:'Gudang Utama',company:'PT Enterpro Indonesia',items:[{code:'11.02.05',sfx:'HVS',desc:'HVS paper waste – white office grade',qty:100},{code:'11.04.01',sfx:'Pulp',desc:'Pulp – bleached bale',qty:250},{code:'21.01.03',sfx:'Caustic Soda',desc:'Caustic soda flakes – 25 kg sack',qty:500,sn:false}]};
+const GRN_NO='01GRN-26-0057',$=s=>document.querySelector(s),app=$('#app');
+const fresh=()=>PO.items.map(()=>({on:false,sns:[],q:''}));
+let view='po',sn=0,rows=fresh(),pending=null,grn=null,form={sj:'',nk:''};
+const rec=(r,i)=>PO.items[i].sn===false?(+r[i].q||0):r[i].sns.reduce((a,s)=>a+s.w,0),fmt=n=>n+' kg',code=i=>`${PO.items[i].code} - ${PO.items[i].sfx}`;
+const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('show'),2200)};
+
+function qrSvg(text){let n,dark;
+ try{const q=qrcode(0,'M');q.addData(text);q.make();n=q.getModuleCount();dark=(r,c)=>q.isDark(r,c)}
+ catch(e){n=25;let h=0;for(const ch of text)h=(h*31+ch.charCodeAt(0))>>>0;const f=(r,c)=>(r<8&&c<8)||(r<8&&c>n-9)||(r>n-9&&c<8);
+  dark=(r,c)=>{if(f(r,c))return r%6==0||c%6==0||(r%7>1&&r%7<5&&c%7>1&&c%7<5)||r==0||c==0;h=(h*1103515245+12345)>>>0;return(h>>>16)%2==0}}
+ let d='';for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(dark(r,c))d+=`M${c} ${r}h1v1h-1z`;
+ return `<svg viewBox="-2 -2 ${n+4} ${n+4}" shape-rendering="crispEdges" role="img" aria-label="QR code"><path d="${d}"/></svg>`}
+const qText=(i,s)=>`SKU:${code(i)}|SN:${s.id}|PO:${PO.no}|W:${s.w}kg`;
+const lines=(i,s)=>`<div>SKU : ${code(i)}</div><div>Serial Number : ${s.id}</div><div>PO Number : ${PO.no}</div><div>Weight : ${s.w} kg</div>`;
+
+const kv=a=>`<dl class="kv">${a.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>`;
+const supplier=`<div class="card"><div class="ch">Supplier Information</div>${kv([['Supplier','PT Harapan Polimer'],['Currency','USD'],['Exchange Rate','Rp 16,250.00'],['Billing Address','Jl. Industri Raya 21, Bekasi 17530'],['Contact Person','Budi Hartono'],['Phone Number','+62 21 8890 1234'],['Ship to Address','Gudang Utama, Jl. Raya Cibitung No. 8, Bekasi']])}</div>`;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const WHY='Fill in the required fields (*) and receive at least one item (add an SN or enter a quantity).';
+const valid=()=>rows.some((r,i)=>r.sns.length||(PO.items[i].sn===false&&r.on&&rec(rows,i)>0))&&rows.every((r,i)=>rec(rows,i)<=PO.items[i].qty)&&form.sj.trim()&&form.nk.trim();
+const pre=v=>`<input class="fi" readonly value="${esc(v)}">`;
+function grnSupplier(done){const f=done?grn.form:form,ed=id=>done?pre(f[id]):`<input class="fi" id="${id}" data-f="${id}" value="${esc(f[id])}" autocomplete="off" aria-required="true">`;
+ return `<div class="card"><div class="ch">Supplier Information</div>${kv([['Nama Supplier',pre(PO.sup)],['No. Surat Jalan <i class="rq">*</i>',ed('sj')],['No. Kendaraan <i class="rq">*</i>',ed('nk')],['Location Code',pre(PO.wh)],['Company',pre(PO.company)]])}</div>`}
+const sig=(h,f)=>`<div class="card sig"><div class="sh">${h}</div><div class="sb"></div><div class="sf">${f}</div></div>`;
+const title=(t,tag)=>`<div class="title"><h1>${t}</h1>${tag?`<span class="tag">${tag}</span>`:''}</div>`;
+const kebab=(id,items)=>`<div class="acts"><button class="ib" data-dd aria-label="Actions">${I.dots}</button><div class="dd">${items}</div></div>`;
+
+function render(){
+ if(view==='po'){
+  app.innerHTML=title(PO.no,'Purchase Order')+`<div class="two">${supplier}<div class="card"><div class="ch">Order Information</div>${kv([['Number',PO.no],['TGL PO','20 Oct 2026'],['Estimated Receive Date','26 Oct 2026'],['Warehouse',PO.wh],['Term of Payment','Net 30'],...(grn?[['Goods Receipt',`<a class="lnk" href="#" data-go="view">${GRN_NO}</a>`]]:[])])}</div></div>
+  <div class="card"><table><thead><tr><th>No.</th><th>Item</th><th>Description</th><th>Quantity</th></tr></thead><tbody>${PO.items.map((p,i)=>`<tr><td data-l="No.">${i+1}</td><td data-l="Item" class="bl">${code(i)}</td><td data-l="Description">${p.desc}</td><td data-l="Quantity" class="bl">${fmt(p.qty)}</td></tr>`).join('')}</tbody><tfoot><tr><td colspan="3">Total SUM</td><td class="bl">${fmt(PO.items.reduce((a,p)=>a+p.qty,0))}</td></tr></tfoot></table></div>
+  <div class="sigs one">${sig('Ordered By','Admin Purchasing')}</div>
+  <div class="bar"><button class="btn" data-act="grn">+ GRN</button></div>`;
+ }
+ if(view==='grn'){
+  const any=valid(),all=rows.every(r=>r.on);
+  app.innerHTML=title('Create GRN')+`<div class="two">${grnSupplier(false)}<div class="card"><div class="ch">Receive Information</div>${kv([['No. PO',pre(PO.no)]])}</div></div>
+  <div class="card"><table><thead><tr><th class="ck"><input type="checkbox" data-all ${all?'checked':''} aria-label="Select all"></th><th>Item</th><th>Description</th><th class="r">Quantity Ordered</th><th class="r">Quantity Received</th><th>Action</th></tr></thead><tbody>${PO.items.map((p,i)=>{const r=rows[i];
+   return `<tr><td class="ck"><input type="checkbox" data-chk="${i}" ${r.on?'checked':''} aria-label="Select ${code(i)}"></td><td data-l="Item" class="bl">${code(i)}</td><td data-l="Description">${p.desc}</td><td data-l="Quantity Ordered" class="r bl">${fmt(p.qty)}</td><td data-l="Quantity Received" class="r bl">${p.sn===false&&r.on?`<input class="fi qin" type="number" inputmode="decimal" min="0" step="0.1" data-q="${i}" value="${r.q}" aria-label="Quantity received ${code(i)}">`:rec(rows,i)}</td><td${p.sn===false?'':' data-l="Action"'}>${p.sn===false?'':`<button class="btn btn-s" data-sn="${i}" ${r.on?'':'disabled'}>+ SN</button>`}</td></tr>`+
+   r.sns.map(s=>`<tr><td class="ck"></td><td data-l="Serial Number" class="bl">${s.id}</td><td></td><td></td><td data-l="Weight" class="r bl">${s.w}</td><td><div class="acts"><button class="ib" data-pr="${i}:${s.id}" title="Reprint QR" aria-label="Print ${s.id}">${I.print}</button><button class="ib del" data-del="${i}:${s.id}" title="Delete" aria-label="Delete ${s.id}">${I.trash}</button></div></td></tr>`).join('')}).join('')}</tbody></table></div>
+  <div class="bar"><button class="btn btn-p" id="save" data-act="save" ${any?'':'disabled'}>Save</button><button class="btn" data-go="po">Cancel</button><span class="why" id="why">${any?'':WHY}</span></div>`;
+ }
+ if(view==='view'){const R=grn.rows;
+  app.innerHTML=title(GRN_NO,'GRN')+`<div class="two">${grnSupplier(true)}<div class="card"><div class="ch">Receive Information</div>${kv([['No. PO',pre(PO.no)]])}</div></div>
+  <div class="card"><table><thead><tr><th>No</th><th>Item</th><th>Description</th><th class="r">Quantity</th><th>Action</th></tr></thead><tbody>${PO.items.map((p,i)=>R[i].sns.length||(p.sn===false&&rec(R,i)>0)?`<tr><td data-l="No">${i+1}</td><td data-l="Item" class="bl">${code(i)}</td><td data-l="Description">${p.desc}</td><td data-l="Quantity" class="r bl">${rec(R,i)}</td><td>${p.sn===false?'':kebab(i,`<button data-pa="${i}">Print QR Code</button>`)}</td></tr>`+
+   R[i].sns.map(s=>`<tr><td></td><td data-l="Serial Number" class="bl">${s.id}</td><td></td><td data-l="Weight" class="r bl">${s.w}</td><td>${kebab(i,`<button data-pr="${i}:${s.id}">Print QR Code</button>`)}</td></tr>`).join(''):'').join('')}</tbody></table></div>
+  <div class="sigs">${sig('Yang Menerima','Bagian Gudang')}${sig('Diperiksa Oleh','Bagian QC')}${sig('Menyetujui','Kep. Pabrik')}${sig('Yang Menyerahkan','Supplier')}</div>`;
+ }
+ if(render.v!==view){scrollTo(0,0);render.v=view}}
+
+function openModal(step){const i=pending.i,p=PO.items[i],rem=p.qty-rec(rows,i);
+ $('#modal').className='modal'+(step==='qr'?' wide':'');
+ $('#modal').innerHTML=step==='w'?`<div class="mh">Create Serial Number<button class="x" data-act="x" aria-label="Close">×</button></div><div class="mb"><div class="hint">${code(i)} · remaining ${fmt(rem)}</div><label for="w">Weight *</label><div class="inp"><input id="w" type="number" inputmode="decimal" min="0" step="0.1" value="${Math.min(50,rem)}"><span>kg</span></div><div class="err" id="err"></div></div><div class="mf"><button class="btn btn-p btn-s" style="min-width:81px" data-act="confirm">Confirm</button></div>`
+ :`<div class="mh">QR Code<button class="x" data-act="close" aria-label="Close">×</button></div><div class="qrb"><div class="qr">${qrSvg(qText(i,pending.s))}</div><div class="ql">${lines(i,pending.s)}</div></div><div class="mf"><button class="btn btn-p btn-s" style="min-width:81px" data-act="printclose">Print</button></div>`;
+ $('#bd').classList.add('show');if(step==='w')setTimeout(()=>{const w=$('#w');w.focus();w.select()},50)}
+const closeModal=()=>$('#bd').classList.remove('show');
+function doPrint(list){$('#printArea').innerHTML=list.map(([i,s])=>`<div style="page-break-after:always"><div style="width:50mm">${qrSvg(qText(i,s))}</div>${lines(i,s)}</div>`).join('');try{window.print()}catch(e){toast('Print dialog sent')}}
+const R=()=>view==='view'?grn.rows:rows,find=k=>{const[i,id]=k.split(':');return[+i,R()[+i].sns.find(s=>s.id===id)]};
+function commit(){rows[pending.i].sns.push(pending.s);const id=pending.s.id;pending=null;closeModal();render();toast(id+' added')}
+
+document.addEventListener('click',e=>{
+ const t=e.target.closest('[data-act],[data-go],[data-sn],[data-pr],[data-pa],[data-del],[data-dd]');
+ if(!e.target.closest('.acts'))document.querySelectorAll('.dd.show').forEach(d=>d.classList.remove('show'));
+ if(e.target.id==='bd'){pending&&pending.s?commit():closeModal();return}
+ if(!t)return;
+ const d=t.dataset;
+ if(d.dd!==undefined){const m=t.nextElementSibling,o=m.classList.contains('show');document.querySelectorAll('.dd.show').forEach(x=>x.classList.remove('show'));if(!o)m.classList.add('show');return}
+ if(d.go){e.preventDefault();view=d.go;document.body.classList.remove('sb');render();return}
+ if(d.sn){pending={i:+d.sn};openModal('w');return}
+ if(d.pr){doPrint([find(d.pr)]);return}
+ if(d.pa){doPrint(grn.rows[+d.pa].sns.map(s=>[+d.pa,s]));return}
+ if(d.del){const[i,s]=find(d.del);rows[i].sns=rows[i].sns.filter(x=>x!==s);render();toast(s.id+' deleted');return}
+ switch(d.act){
+  case 'menu':document.body.classList.toggle('sb');break;
+  case 'grn':rows=fresh();form={sj:'',nk:''};view='grn';render();break;
+  case 'confirm':{const p=PO.items[pending.i],rem=p.qty-rec(rows,pending.i),w=parseFloat($('#w').value);
+   if(!(w>0)){$('#err').textContent='Enter a weight greater than 0.';return}
+   if(w>rem){$('#err').textContent='Exceeds remaining quantity ('+fmt(rem)+').';return}
+   pending.s={id:`SN${++sn} - ${p.sfx}`,w};openModal('qr');break}
+  case 'x':closeModal();pending=null;break;
+  case 'close':commit();break;
+  case 'printclose':doPrint([[pending.i,pending.s]]);commit();break;
+  case 'save':grn={rows:JSON.parse(JSON.stringify(rows)),form:{...form}};view='view';render();toast(GRN_NO+' saved');break;
+  case 'reset':sn=0;rows=fresh();form={sj:'',nk:''};grn=null;view='po';render();break}
+});
+document.addEventListener('change',e=>{const d=e.target.dataset;
+ if(d.all!==undefined){rows.forEach(r=>{if(e.target.checked)r.on=true;else if(!r.sns.length){r.on=false;r.q=''}});render();return}
+ if(d.chk===undefined)return;const c=+d.chk;
+ if(!e.target.checked&&rows[c].sns.length){e.target.checked=true;toast('Delete the serial numbers first');return}
+ rows[c].on=e.target.checked;if(!rows[c].on)rows[c].q='';render()});
+document.addEventListener('input',e=>{const d=e.target.dataset;
+ if(d.q!==undefined){const i=+d.q;rows[i].q=e.target.value;e.target.classList.toggle('bad',rec(rows,i)>PO.items[i].qty)}
+ else if(d.f)form[d.f]=e.target.value;else return;
+ const ok=!!valid();$('#save').disabled=!ok;$('#why').textContent=ok?'':WHY});
+document.addEventListener('keydown',e=>{
+ if(e.key==='Escape'&&$('#bd').classList.contains('show'))pending&&pending.s?commit():closeModal();
+ if(e.key==='Enter'&&e.target.id==='w')document.querySelector('[data-act=confirm]').click()});
+render();
+</script>
+</body>
+</html>

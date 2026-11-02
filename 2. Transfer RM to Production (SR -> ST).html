@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Softo ERP – Stock Request → Stock Transfer</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔁</text></svg>">
+<style>
+:root{color-scheme:light;--b:#0085FC;--bl:#8DC4FC;--bd:#DFDFDF;--hd:#F7F7F7;--g:#6C767D;--gr:#4D9900;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:#fff;color:#000;font:14px/1.45 "Helvetica Neue",Helvetica,Arial,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:#fff;z-index:60}
+button{font:inherit;cursor:pointer}
+.side{position:fixed;top:0;bottom:0;left:0;width:200px;background:#fff;border-right:1px solid var(--bd);z-index:45;padding-top:env(safe-area-inset-top,0px);transition:transform .2s}
+.slogo{width:91px;height:91px;margin:17px auto 18px;display:block}
+.side a{display:block;padding:10px 24px;color:#333;text-decoration:none;border-left:3px solid transparent;cursor:pointer}
+.side a.on{color:var(--b);font-weight:700;background:#EEF6FF;border-color:var(--b)}
+.scrim{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:35}
+.top{position:fixed;top:env(safe-area-inset-top,0px);left:200px;right:0;height:50px;background:#fff;border-bottom:1px solid var(--bd);z-index:30;display:flex;align-items:center;gap:5px;padding:0 15px 0 20px}
+.logo-b{border:0;background:none;padding:0;width:40px;height:40px;flex:none;margin-right:5px}.logo-b svg{width:40px;height:40px;display:block}
+.pill{flex:0 1 265px;min-width:60px;height:30px;border:1px solid var(--bd);border-radius:15px;display:flex;align-items:center;padding:0 12px 0 14px;color:#999}
+.pill input{border:0;outline:0;flex:1;min-width:0;font:inherit;background:none}
+.sp{flex:1}
+.circ{width:40px;height:40px;flex:none;border-radius:50%;border:1px solid #d3d3d3;background:#fff;color:var(--g);display:grid;place-items:center;position:relative;padding:0}
+.circ:hover{border-color:var(--b);color:var(--b)}
+.dot{position:absolute;top:5px;right:9px;width:9px;height:9px;border-radius:50%;background:#C00}
+.who{margin-left:8px;line-height:1.25;font-size:13px;white-space:nowrap}.who span{color:var(--g)}
+main{margin-left:200px;padding:78px 30px 40px}
+.wrap{max-width:1120px}
+body.sb .side{transform:translateX(-100%)}body.sb .top{left:0}body.sb main{margin-left:0}
+h1{font-size:20px;margin:0;font-weight:400;line-height:1.5}
+.bdg{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 16px}
+.tag,.sb{display:inline-flex;height:25px;padding:0 16px;align-items:center;border-radius:5px;color:#fff;font-weight:700;font-size:13px}
+.tag{background:var(--g)}.un{background:#DB2843}.pu{background:#009900}
+.al{border-radius:5px;padding:12px 14px;display:flex;gap:10px;font-size:13px;line-height:1.4;margin-bottom:16px;border:1px solid}
+.al.w{background:#FFF1CF;border-color:#FFECBC;color:#856110}.al.ok{background:#E0F0D6;border-color:#C9E4B8;color:#33732F}.al.e{background:#F8D6DA;border-color:#F4C5CB;color:#711623}
+.al svg{flex:none;margin-top:1px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0 25px}
+.card{border:1px solid var(--bd);border-radius:5px;background:#fff;margin-bottom:20px}
+.ch{background:var(--hd);height:40px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd);border-radius:4px 4px 0 0}
+.ch span{color:var(--g);font-size:13px}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:12px;margin:0;padding:16px 20px;align-items:center}.kv dt{color:var(--g)}.kv dd{margin:0;font-weight:700;min-width:0}
+.rq{color:#d9261c;font-style:normal}
+.fi{width:100%;height:34px;border:1px solid var(--bd);border-radius:5px;padding:0 12px;font:inherit;font-weight:700;background:var(--hd);color:#000}
+.radios{display:flex;gap:22px}.radios label{display:flex;gap:6px;align-items:center;font-weight:700;cursor:pointer}
+input[type=radio],input[type=checkbox]{accent-color:var(--b);margin:0;width:16px;height:16px;cursor:pointer}
+.lnk{color:var(--b);text-decoration:none}
+.r{display:grid;align-items:center;gap:6px;padding:0 20px;min-height:40px;border-top:1px solid var(--bd);font-size:13px}
+.r.h{background:var(--hd);font-weight:700;border-top:0;border-radius:4px 4px 0 0}
+.sr .r{grid-template-columns:200px 1fr 120px}
+.fm .r{grid-template-columns:20px minmax(150px,1.4fr) 110px 120px 110px 50px}
+.vw .r{grid-template-columns:50px 1fr 140px 80px}
+.rc .r{grid-template-columns:22px minmax(80px,1fr) 48px 22px 22px;padding:0 10px}
+.sc .r{grid-template-columns:1fr auto}
+.n{text-align:right}.gn{text-align:right;color:var(--gr)}.bl{color:var(--b);font-weight:700;display:flex;align-items:center;gap:4px;min-width:0;overflow-wrap:anywhere}
+.sn .sl{padding-left:14px}.sn{min-height:40px}
+.mu .bl,.mu .n{color:#909099}
+.qb{height:26px;width:90px;margin-left:auto;border:1px solid #CED4DA;border-radius:5px;background:#E9ECEF;color:#7D868C;text-align:right;padding:0 6px;font:inherit;display:flex;align-items:center;justify-content:flex-end}
+input.qb{display:block}input.qb:not(:disabled){background:#fff;color:#000}input.qb.bad{border-color:#d9261c;color:#d9261c}
+.ib{border:0;background:none;color:var(--b);padding:2px;display:grid;place-items:center;border-radius:4px}
+.ib:disabled{color:#C5C9CC;cursor:not-allowed}.ib.del{color:var(--g)}.ib.del:hover{color:#d9261c}
+.tg{border:0;background:none;padding:0 2px;color:#000;display:grid;place-items:center}.tg.cl svg{transform:rotate(-90deg)}
+.btn{height:40px;min-width:80px;padding:0 18px;border-radius:5px;border:1px solid var(--b);background:#fff;color:var(--b);font-size:16px}
+.btn:hover:not(:disabled){background:#EEF6FF}.btn-p{background:var(--b);color:#fff}.btn-p:hover:not(:disabled){background:#0072d9}
+.btn-p:disabled{background:var(--bl);border-color:var(--bl);cursor:not-allowed}
+.btn:focus-visible,.circ:focus-visible,.ib:focus-visible,.lk:focus-visible,input:focus-visible,.logo-b:focus-visible{outline:3px solid rgba(0,133,252,.35);outline-offset:1px}
+.bar{margin-top:30px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.scw{max-width:480px;margin:0 auto}
+.sh{display:flex;align-items:center;gap:12px;margin:0 0 4px -4px}.sh h1{margin:0}.sh .ib{color:#000;padding:4px}
+.sub{margin:0 0 6px;color:var(--g)}
+.bn{min-height:50px;margin:8px 0 14px}.bn .al{margin:0}
+.cap{text-align:center;font-size:14px;margin:0 0 14px}
+.vf{position:relative;width:250px;max-width:80%;aspect-ratio:1;margin:0 auto 20px;background:linear-gradient(135deg,#454c53,#22272b);border-radius:6px;overflow:hidden}
+.vf .c{position:absolute;width:40px;height:40px;border:3px solid #EDEDED;opacity:.9}
+.tl{top:14px;left:14px;border-right:0;border-bottom:0}.tr{top:14px;right:14px;border-left:0;border-bottom:0}.bl2{bottom:14px;left:14px;border-right:0;border-top:0}.br{bottom:14px;right:14px;border-left:0;border-top:0}
+.vf .ln{position:absolute;left:14%;right:14%;height:2px;background:#ff4d4f;box-shadow:0 0 8px #ff4d4f;animation:sc 2s ease-in-out infinite alternate}
+@keyframes sc{from{top:16%}to{top:84%}}
+.vf svg{position:absolute;inset:0;margin:auto;opacity:.18;color:#fff}
+.sim{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:22px}.sim .btn{min-width:200px}
+.lk{border:0;background:none;color:var(--g);text-decoration:underline;font-size:13px}
+.empty{padding:14px 20px;color:var(--g);font-size:13px}
+.bd{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:70;display:none;align-items:center;justify-content:center;padding:14px;overflow:auto}.bd.show{display:flex}
+.modal{background:#fff;border:1px solid #C8C8C8;border-radius:5px;width:100%;max-width:440px;margin:auto;animation:pop .15s ease-out}
+@keyframes pop{from{transform:translateY(10px);opacity:0}}
+.mh{display:flex;justify-content:space-between;align-items:center;padding:12px 15px;font-size:18px;border-bottom:1px solid #ddd}
+.x{border:0;background:none;color:#868686;font-size:26px;line-height:1;padding:0 4px}
+.mb{padding:15px}.mb .card{margin:0}.mf{padding:10px 15px;border-top:1px solid #ddd;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.mf span{color:var(--g);font-size:13px}
+.toast{position:fixed;left:50%;bottom:calc(1rem + env(safe-area-inset-bottom,0px));transform:translate(-50%,160%);background:#222;color:#fff;padding:.6rem 1rem;border-radius:5px;z-index:80;transition:transform .25s;max-width:90vw;font-size:13px}.toast.show{transform:translate(-50%,0)}
+@media (min-width:901px){.mo{display:none!important}}
+@media (max-width:900px){
+ .dm{display:none!important}.side{transform:translateX(-100%);box-shadow:4px 0 16px rgba(0,0,0,.15)}body.sb .side{transform:none}body.sb .scrim{display:block}
+ .top{left:0!important;padding:0 10px}main{margin-left:0!important;padding:70px 20px 40px}.two{grid-template-columns:1fr}
+ .pill{flex-basis:155px}.kv{grid-template-columns:125px 1fr}
+ .r{padding:0 12px;gap:6px}.sr .r{grid-template-columns:minmax(84px,1fr) minmax(0,1.1fr) 52px;padding:6px 20px}
+ .fm .r{grid-template-columns:18px minmax(80px,1fr) 42px 54px 44px 22px}.fm .qb{width:100%}
+ .vw .r{grid-template-columns:26px minmax(80px,1fr) 56px 24px;padding-left:14px}}
+@media (max-width:420px){main{padding:66px 12px 36px}.hs{display:none}.kv{grid-template-columns:105px 1fr;padding:14px}.r{gap:4px;padding:0 8px}.sr .r{padding:6px 12px}.fm .r{grid-template-columns:16px minmax(70px,1fr) 38px 50px 40px 20px}.pill{flex-basis:110px}}
+</style>
+</head>
+<body>
+<aside class="side"><svg class="slogo" viewBox="0 0 200 200"><circle cx="100" cy="100" r="100" fill="#0085FC"/><g fill="#fff"><rect x="60" y="50" width="100" height="19" rx="9.5"/><rect x="50" y="91" width="100" height="19" rx="9.5"/><rect x="40" y="132" width="85" height="19" rx="9.5"/></g></svg>
+<nav><a>Dashboard</a><a class="on" data-go="sr">Stock Request</a><a>Stock Transfer</a><a>Inventory</a><a>Reports</a></nav></aside>
+<div class="scrim" data-act="menu"></div>
+<header class="top">
+ <button class="logo-b mo" data-act="menu" aria-label="Menu"><svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="100" fill="#0085FC"/><g fill="#fff"><rect x="60" y="50" width="100" height="19" rx="9.5"/><rect x="50" y="91" width="100" height="19" rx="9.5"/><rect x="40" y="132" width="85" height="19" rx="9.5"/></g></svg></button>
+ <button class="circ dm" id="i-m" data-act="menu" aria-label="Toggle menu"></button>
+ <label class="pill"><input placeholder="Search…" aria-label="Search"><span id="i-s"></span></label><span class="sp"></span>
+ <button class="circ hs" id="i-a" aria-label="Apps"></button><button class="circ" id="i-b" aria-label="Notifications"><i class="dot"></i></button><button class="circ hs" id="i-g" aria-label="Settings"></button>
+ <span class="circ" id="av"></span><div class="who dm"><b>User</b><br><span>Warehouse</span></div>
+</header>
+<main id="app"></main>
+<div class="bd" id="bd"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const S=(p,f,z=20)=>`<svg viewBox="0 0 24 24" width="${z}" height="${z}" fill="${f||'none'}" stroke="${f?'none':'currentColor'}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const QRP='<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v3M14 21h3M17 17h4v4"/>';
+const I={search:S('<circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/>',0,16),bell:S('<path d="M18 16v-5a6 6 0 0 0-12 0v5l-2 2h16zM10 20a2 2 0 0 0 4 0"/>'),gear:S('<circle cx="12" cy="12" r="3.2"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/>'),
+ apps:S('<rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/>'),menu:S('<path d="M4 7h16M4 12h16M4 17h10"/>'),user:S('<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z"/>','#000',24),
+ qr:S(QRP,0,18),trash:S('<path d="M4 7h16M10 11v6M14 11v6M5 7l1 13h12l1-13M9 7V4h6v3"/>'),check:S('<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.5"/>',0,20),
+ tri:S('<path d="M5 8h14l-7 8z"/>','currentColor',10),back:S('<path d="M15 5l-7 7 7 7"/>',0,24),warn:S('<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h0"/>',0,18),info:S('<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h0"/>',0,18)};
+const $=s=>document.querySelector(s);
+$('#i-s').innerHTML=I.search;$('#i-a').innerHTML=I.apps;$('#i-b').insertAdjacentHTML('afterbegin',I.bell);$('#i-g').innerHTML=I.gear;$('#i-m').innerHTML=I.menu;$('#av').innerHTML=I.user;
+
+const WH={from:'Gudang Bahan Baku',to:'Gudang Produksi'};
+const SR={no:'01SR-26-0018',date:'26 Oct 2026',by:'Dewi Lestari',items:[
+ {c:'11.02.05',s:'HVS',d:'HVS paper waste – white office grade',q:60,stock:100,scan:true},
+ {c:'11.04.01',s:'Pulp',d:'Pulp – bleached bale',q:20,stock:100,scan:true},
+ {c:'21.01.03',s:'Caustic Soda',d:'Caustic soda flakes – 25 kg sack',q:50,stock:40,scan:false}]};
+const W={HVS:[15,15,20,25,25],Pulp:[10,10,15,25,40]};
+const inv=SR.items.map(it=>it.scan?W[it.s].map((w,k)=>({id:`SN${k+1} - ${it.s}`,w})):[]);
+const code=i=>`${SR.items[i].c} - ${SR.items[i].s}`;
+const newDraft=()=>({on:SR.items.map(()=>false),sns:SR.items.map(()=>[]),q:SR.items.map(()=>''),shift:'',open:SR.items.map(()=>true)});
+let view='sr',draft=newDraft(),st=null,scan=null,banner=null,recv=new Set(),rm=false,stock=SR.items.map(x=>x.stock);
+const tq=i=>SR.items[i].scan?draft.sns[i].reduce((a,s)=>a+s.w,0):(+draft.q[i]||0);
+const lim=i=>stock[i];
+const valid=()=>!!draft.shift&&draft.on.some(Boolean)&&SR.items.every((it,i)=>!draft.on[i]||(it.scan?draft.sns[i].length>0:(tq(i)>0&&tq(i)<=lim(i))));
+const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('show'),2400)};
+const kv=a=>`<dl class="kv">${a.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>`;
+const card=(h,b,x='')=>`<div class="card"><div class="ch">${h}${x?`<span>${x}</span>`:''}</div>${b}</div>`;
+const tri=(i,open)=>`<button class="tg ${open?'':'cl'}" data-tg="${i}" aria-label="Toggle serial numbers">${I.tri}</button>`;
+const pre=v=>`<input class="fi" readonly value="${v}">`;
+const bn=()=>banner?`<div class="al ${banner.t}">${banner.t==='e'?I.warn:I.info}<span>${banner.m}</span></div>`:'';
+const stStatus=()=>st.status==='Published'?'<span class="sb pu">Published</span>':'<span class="sb un">Unpublished</span>';
+const stIds=()=>st.lines.flatMap(l=>l.sns);
+
+function vSR(){
+ return `<h1>${SR.no}</h1><div class="bdg"><span class="tag">Stock Request</span></div><div class="two"><div>`+
+ card('Request Information',kv([['Request Date',SR.date],['Requester',SR.by],...(st?[['Stock Transfer',`<a class="lnk" href="#" data-go="st">${st.no}</a> ${stStatus()}`]]:[])]))+`</div><div>`+
+ card('Warehouse Information',kv([['Request From',WH.from],['Request To',WH.to]]))+`</div></div>`+
+ `<div class="card sr"><div class="r h"><div>Item</div><div>Keterangan</div><div class="n">Quantity</div></div>${SR.items.map((it,i)=>`<div class="r"><div class="bl">${code(i)}</div><div>${it.d}</div><div class="n bl" style="display:block">${it.q}</div></div>`).join('')}</div>`+
+ `<div class="bar">${st?'':'<button class="btn" data-act="newst">+ Stock Transfer</button>'}</div>`}
+
+function vNew(){const all=draft.on.every(Boolean);
+ return `<h1>Create Stock Transfer</h1><div style="height:16px"></div><div class="two"><div>`+
+ card('Transfer Information',kv([['Request Number',pre(SR.no)],['Shift <i class="rq">*</i>',`<div class="radios">${[1,2,3].map(n=>`<label><input type="radio" name="sh" data-shift="${n}" ${draft.shift==n?'checked':''}>${n}</label>`).join('')}</div>`]]))+`</div><div>`+
+ card('Warehouse Information',kv([['Transfer From',pre(WH.from)],['Transfer To',pre(WH.to)]]))+`</div></div>`+
+ `<div class="card fm"><div class="r h"><input type="checkbox" data-all ${all?'checked':''} aria-label="Select all"><div>Item</div><div class="n">Request Qty</div><div class="n">Transfer Qty</div><div class="n">In Stock</div><div></div></div>`+
+ SR.items.map((it,i)=>{const on=draft.on[i],sns=draft.sns[i],bad=!it.scan&&draft.q[i]!==''&&tq(i)>lim(i);
+  return `<div class="r"><input type="checkbox" data-chk="${i}" ${on?'checked':''} aria-label="Select ${code(i)}"><div class="bl">${it.scan&&sns.length?tri(i,draft.open[i]):''}${code(i)}</div><div class="n">${it.q}</div><div>${it.scan?`<div class="qb">${tq(i)}</div>`:`<input class="qb ${bad?'bad':''}" type="number" inputmode="decimal" min="0" step="0.1" placeholder="0" data-q="${i}" value="${draft.q[i]}" ${on?'':'disabled'} aria-label="Transfer qty ${code(i)}">`}</div><div class="gn">${stock[i]}</div><div>${it.scan?`<button class="ib" data-scan="${i}" ${on?'':'disabled'} aria-label="Scan QR ${code(i)}">${I.qr}</button>`:''}</div></div>`+
+  (it.scan&&draft.open[i]?sns.map(s=>`<div class="r sn"><span></span><div class="bl sl">${s.id}</div><div></div><div class="n">${s.w}</div><div></div><div><button class="ib del" data-del="${i}:${s.id}" aria-label="Remove ${s.id}">${I.trash}</button></div></div>`).join(''):'')}).join('')+`</div>`+
+ `<div class="bar"><button class="btn btn-p" id="save" data-act="save" ${valid()?'':'disabled'}>Save</button></div>`}
+
+function vScan(){const send=scan.mode==='send',i=scan.i;
+ const rows=send?draft.sns[i]:stIds().filter(s=>recv.has(s.id));
+ const info=send?`${rows.length} SN · ${tq(i)} kg`:`${rows.length} / ${stIds().length} SN`;
+ return `<div class="scw"><div class="sh"><button class="ib" data-act="back" aria-label="Back">${I.back}</button><h1>QR Scanner</h1></div>`+
+ `<p class="sub">${send?`${code(i)} · In Stock ${stock[i]} kg`:st.no}</p><div class="bn">${bn()}</div><p class="cap">Scan QR Code pada barang yang ${send?'dikirim':'diterima'}.</p>`+
+ `<div class="vf"><i class="c tl"></i><i class="c tr"></i><i class="c bl2"></i><i class="c br"></i>${S(QRP,0,120)}<div class="ln"></div></div>`+
+ `<div class="sim"><button class="btn btn-p" data-act="sim">Simulate Scanning</button><button class="lk" data-act="simbad">Simulate wrong QR</button></div>`+
+ card('Scanned',rows.length?`<div class="sc">${rows.map(s=>`<div class="r"><div class="bl">${s.id}</div><div class="n">${s.w} kg</div></div>`).join('')}</div>`:'<div class="empty">Belum ada SN yang di-scan.</div>',info)+
+ `<div class="bar" style="margin-top:20px"><button class="btn" data-act="back">Done</button></div></div>`}
+
+function vST(){const un=st.status==='Unpublished',nm=`<b>${WH.from}</b> dan ${un?'belum':'sudah'} bertambah pada <b>${WH.to}</b>`;
+ return `<h1>${st.no}</h1><div class="bdg"><span class="tag">Stock Transfer</span>${stStatus()}</div>`+
+ `<div class="al ${un?'w':'ok'}">${I.info}<span>Stock ${un?'belum':'sudah'} berkurang pada ${nm}.</span></div><div class="two"><div>`+
+ card('Transfer Information',kv([['Request Number',SR.no],['Shift',st.shift]]))+`</div><div>`+card('Warehouse Information',kv([['Transfer From',WH.from],['Transfer To',WH.to]]))+`</div></div>`+
+ `<div class="card vw"><div class="r h"><div>No.</div><div>Item</div><div class="n">Quantity</div><div>Unit</div></div>${st.lines.map((l,k)=>`<div class="r"><div>${k+1}</div><div class="bl">${l.sns.length?tri(l.i,st.open[l.i]):''}${code(l.i)}</div><div class="n">${l.qty}</div><div>kg</div></div>`+(st.open[l.i]?l.sns.map(s=>`<div class="r sn"><span></span><div class="bl sl">${s.id}</div><div class="n">${s.w}</div><div></div></div>`).join(''):'')).join('')}</div>`+
+ `<div class="bar">${un?'<button class="btn" data-act="receive">Receive</button>':''}</div>`}
+
+function modalHTML(){const all=stIds(),done=all.filter(s=>recv.has(s.id)).length,ok=done===all.length;
+ return `<div class="mh">Confirm Receive<button class="x" data-act="cancelrecv" aria-label="Cancel">×</button></div><div class="mb"><div class="card rc"><div class="r h"><div>No.</div><div>Item</div><div class="n">Qty</div><div>Unit</div><div></div></div>`+
+ st.lines.map((l,k)=>`<div class="r"><div>${k+1}</div><div class="bl">${code(l.i)}</div><div class="n">${l.qty}</div><div>kg</div><div>${l.sns.length?`<button class="ib" data-act="rscan" aria-label="Scan QR">${I.qr}</button>`:''}</div></div>`+
+  l.sns.map(s=>{const d=recv.has(s.id);return `<div class="r sn ${d?'':'mu'}"><span></span><div class="bl sl">${s.id}</div><div class="n" style="color:${d?'#000':''}">${s.w}</div><div></div><div style="color:var(--gr)">${d?I.check:''}</div></div>`}).join('')).join('')+
+ `</div></div><div class="mf"><span>${done} / ${all.length} SN ter-scan</span><button class="btn btn-p" data-act="confirm" ${ok?'':'disabled'}>Confirm</button></div>`}
+
+function refreshModal(){const show=rm&&view==='st'&&st&&st.status==='Unpublished';if(show)$('#modal').innerHTML=modalHTML();$('#bd').classList.toggle('show',!!show)}
+function render(){
+ $('#app').innerHTML=`<div class="wrap">${{sr:vSR,nw:vNew,scan:vScan,st:vST}[view]()}</div>`;refreshModal();
+ if(render.v!==view){scrollTo(0,0);render.v=view}}
+const setB=(t,m)=>{banner={t,m};render()};
+
+function doScan(bad){
+ if(scan.mode==='send'){const i=scan.i;
+  if(bad){const f=inv[i===0?1:0][2];return setB('e',`Tidak ditemukan ${f.id} pada SKU ${code(i)} ! Silakan scan QR lain.`)}
+  const s=inv[i].find(x=>!draft.sns[i].some(y=>y.id===x.id));
+  if(!s)return setB('e',`Semua SN pada In Stock (${stock[i]} kg) sudah di-scan.`);
+  if(tq(i)+s.w>stock[i])return setB('e',`Stock tidak cukup (In Stock ${stock[i]} kg) ! Silakan scan QR lain.`);
+  draft.sns[i].push(s);setB('ok',`${s.id} (${s.w} kg) berhasil di-scan.`)}
+ else{
+  if(bad){const f=inv[0].filter(x=>!stIds().some(y=>y.id===x.id)).pop();return setB('e',`Tidak ditemukan ${f.id} pada ${st.no} ! Silakan scan QR lain.`)}
+  const s=stIds().find(x=>!recv.has(x.id));
+  if(!s)return setB('ok','Semua SN sudah ter-scan. Tutup scanner lalu tekan Confirm.');
+  recv.add(s.id);setB('ok',`${s.id} (${s.w} kg) berhasil di-scan.`)}}
+
+document.addEventListener('click',e=>{
+ const t=e.target.closest('[data-act],[data-go],[data-scan],[data-del],[data-tg]');
+ if(!t)return;const d=t.dataset;
+ if(d.go){e.preventDefault();if(d.go==='st'&&!st)return;view=d.go;document.body.classList.remove('sb');render();return}
+ if(d.scan!==undefined){scan={mode:'send',i:+d.scan};banner=null;view='scan';render();return}
+ if(d.del){const[i,id]=d.del.split(':');draft.sns[+i]=draft.sns[+i].filter(s=>s.id!==id);render();toast(id+' dihapus');return}
+ if(d.tg!==undefined){const i=+d.tg;if(view==='nw')draft.open[i]=!draft.open[i];else st.open[i]=!st.open[i];render();return}
+ switch(d.act){
+  case 'menu':document.body.classList.toggle('sb');break;
+  case 'newst':draft=newDraft();view='nw';render();break;
+  case 'back':view=scan.mode==='send'?'nw':'st';banner=null;render();break;
+  case 'sim':doScan(false);break;
+  case 'simbad':doScan(true);break;
+  case 'save':{const lines=SR.items.map((it,i)=>draft.on[i]?{i,qty:tq(i),sns:draft.sns[i].slice()}:null).filter(Boolean);
+   st={no:'01ST-26-0031',shift:draft.shift,status:'Unpublished',lines,open:SR.items.map(()=>true)};view='st';render();toast(st.no+' disimpan – Unpublished');break}
+  case 'receive':recv=new Set();rm=true;render();break;
+  case 'rscan':scan={mode:'recv'};banner=null;view='scan';render();break;
+  case 'cancelrecv':rm=false;recv=new Set();render();break;
+  case 'confirm':st.status='Published';st.lines.forEach(l=>{stock[l.i]-=l.qty});rm=false;render();toast(st.no+' Published – stock dipindahkan');break}
+});
+document.addEventListener('change',e=>{const d=e.target.dataset;
+ if(d.shift){draft.shift=d.shift;render();return}
+ if(d.all!==undefined){draft.on.forEach((_,i)=>{if(e.target.checked)draft.on[i]=true;else if(!draft.sns[i].length){draft.on[i]=false;draft.q[i]=''}});render();return}
+ if(d.chk!==undefined){const i=+d.chk;
+  if(!e.target.checked&&draft.sns[i].length){e.target.checked=true;toast('Hapus SN yang sudah di-scan terlebih dahulu');return}
+  draft.on[i]=e.target.checked;if(!e.target.checked)draft.q[i]='';render()}});
+document.addEventListener('input',e=>{const q=e.target.dataset.q;if(q===undefined)return;const i=+q;draft.q[i]=e.target.value;
+ e.target.classList.toggle('bad',tq(i)>lim(i));$('#save').disabled=!valid()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#bd').classList.contains('show')){rm=false;recv=new Set();render()}});
+render();
+</script>
+</body>
+</html>
